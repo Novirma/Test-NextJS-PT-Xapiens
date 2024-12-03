@@ -16,10 +16,21 @@ import { TbSearch } from "react-icons/tb";
 import { IoIosClose } from "react-icons/io";
 import { Button, Space, Table, Tooltip } from "antd";
 import { BiDetail } from "react-icons/bi";
-import { ApiGetUsers } from "./api";
+import { ApiGetUsers } from "../api";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
   useAuth();
+
+  const searchParams = useSearchParams();
+
+  console.log(searchParams);
+
+  const id = searchParams.get("id");
+  const emailUsers = searchParams.get("email");
+  const firstName = searchParams.get("first_name");
+  const lastName = searchParams.get("last_name");
+  const avatar = searchParams.get("avatar");
 
   const user = localStorage.getItem("user");
 
@@ -103,21 +114,12 @@ export default function Home() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchDataUsers();
-  }, [pagination.current, pagination.pageSize, searchData]);
+  //   useEffect(() => {
+  //     fetchDataUsers();
+  //   }, [pagination.current, pagination.pageSize, searchData]);
 
   const handleSearchData = (e) => {
     setSearchData(e.target.value);
-  };
-
-  const handleNavigate = (value) => {
-    const detailData = value;
-
-    console.log(detailData);
-
-    const queryString = new URLSearchParams(detailData).toString();
-    router.push(`/detail-users?${queryString}`);
   };
 
   const menu = (
@@ -179,9 +181,8 @@ export default function Home() {
               className="z-100 flex items-center justify-center text-lg bg-tPrimary hover:bg-[#4254c5]"
               type="primary"
               // onClick={async (e) => {
-              //   handleNavigate(record);
+              //   handleOpenDetailModal(record);
               // }}
-              onClick={() => handleNavigate(record)}
               icon={<BiDetail className="text-bTextPrimary" />}
             />
           </Tooltip>
@@ -202,7 +203,7 @@ export default function Home() {
               <TbMenu2 size={25}></TbMenu2>
             </button>
             <label className="capitalize text-gray-50 font-semibold">
-              Table Users
+              Detail Users
               {/* {breadcrump} */}
             </label>
           </div>
@@ -285,61 +286,19 @@ export default function Home() {
         )}
       </div>
       <div
-        className={`bg-gray-300 ${
-          record.length == 0 ? "h-4/5" : "h-full"
-        } gap-4 p-4 rounded-md`}
+        className={`bg-gray-300 min-h-[80vh] flex flex-col items-center justify-center
+         gap-4 p-4 rounded-md text-black`}
       >
-        {/* <div className="flex flex-row gap-2 justify-between w-full">
-          <TextInput
-            placeholder="Cari nama"
-            value={searchData}
-            onChange={handleSearchData}
-            rightSection={
-              searchData ? (
-                <ActionIcon
-                  onClick={() => setSearchData("")}
-                  variant="transparent"
-                >
-                  <IoIosClose color="red" size={20} />
-                </ActionIcon>
-              ) : (
-                ""
-              )
-            }
-            leftSection={<TbSearch></TbSearch>}
-          ></TextInput>
-          <div className="flex gap-2">
-            <button
-              // onClick={handleOpenAddModal}
-              className="bg-tPrimary text-white py-1 px-2 rounded-md shadow-md hover:bg-hovercolor hover:border-primary border-[1px] hover:text-black duration-300"
-            >
-              Tambah User
-            </button>
-
-            <button
-              // onClick={handleExportDataToExcel}
-              className="bg-tPrimary text-white py-1 px-2 rounded-md shadow-md hover:bg-hovercolor hover:border-primary border-[1px] hover:text-black duration-300"
-            >
-              Export Data
-            </button>
-          </div>
-        </div> */}
-        <div className="overflow-x-auto pt-4">
-          <Table
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: (event) => {
-                  // handleOpenDetailModal(record);
-                },
-              };
-            }}
-            loading={loading}
-            dataSource={record}
-            columns={columnsDevice}
-            pagination={pagination}
-            onChange={handleTableChange}
-          />
-        </div>
+        <img
+          src={avatar}
+          alt={`${firstName} ${lastName}`}
+          className="w-32 h-32 rounded-full object-cover"
+        />
+        <p className="text-lg font-bold">ID: {id}</p>
+        <p className="text-lg font-bold">Email: {emailUsers}</p>
+        <p className="text-lg font-bold">
+          Name: {firstName} {lastName}
+        </p>
       </div>
     </div>
   );
