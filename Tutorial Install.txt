@@ -1,0 +1,20 @@
+1. Clone Repository
+Clone repository dari GitHub ke komputer Anda:
+
+Salin kode di terminal :
+"git clone https://github.com/your-username/test-pt-xapiens-teknologi-indonesia.git"
+"cd test-pt-xapiens-teknologi-indonesia"
+
+2. Install Dependencies
+Pasang semua dependensi yang dibutuhkan menggunakan npm:
+
+Salin kode di terminal :
+"npm install"
+
+3. Menjalankan Server Development
+Jalankan server untuk pengembangan:
+
+Salin kode di terminal :
+"npm run dev"
+
+Akses aplikasi di browser pada http://localhost:3000 atau yang tertera di console.log nya.
